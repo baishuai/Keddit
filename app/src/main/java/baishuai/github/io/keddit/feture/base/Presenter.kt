@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.ui.base
+package baishuai.github.io.keddit.feture.base
 
 /**
  * Every presenter in the app must either implement this interface or extend BasePresenter

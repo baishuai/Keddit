@@ -1,11 +1,11 @@
-package baishuai.github.io.keddit.ui.news
+package baishuai.github.io.keddit.feture.news
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import baishuai.github.io.keddit.R
 import baishuai.github.io.keddit.data.model.RedditNewsItem
-import baishuai.github.io.keddit.ui.common.ViewType
-import baishuai.github.io.keddit.ui.common.ViewTypeDelegateAdapter
+import baishuai.github.io.keddit.feture.common.ViewType
+import baishuai.github.io.keddit.feture.common.ViewTypeDelegateAdapter
 import baishuai.github.io.keddit.util.getFriendlyTime
 import baishuai.github.io.keddit.util.inflate
 import baishuai.github.io.keddit.util.loadImg

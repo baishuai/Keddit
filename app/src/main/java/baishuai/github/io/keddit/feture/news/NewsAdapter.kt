@@ -1,11 +1,13 @@
-package baishuai.github.io.keddit.ui.news
+package baishuai.github.io.keddit.feture.news
 
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import baishuai.github.io.keddit.BuildConfig
 import baishuai.github.io.keddit.data.model.RedditNewsItem
-import baishuai.github.io.keddit.ui.common.ViewType
-import baishuai.github.io.keddit.ui.common.ViewTypeDelegateAdapter
+import baishuai.github.io.keddit.feture.common.ViewType
+import baishuai.github.io.keddit.feture.common.ViewTypeDelegateAdapter
+import timber.log.Timber
 import java.util.*
 
 /**
@@ -25,6 +27,9 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         delegateAdapters.put(AdapterConstants.NEWS, NewsDelegateAdapter())
         items = ArrayList()
         items.add(loadingItem)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -46,7 +51,7 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun addNews(news: List<RedditNewsItem>) {
         val initPosition = items.size - 1
         items.addAll(initPosition, news)
-        notifyItemRangeInserted(initPosition, initPosition + news.size)
+        notifyItemRangeChanged(initPosition, itemCount)
     }
 
     fun clearAndAddNews(news: List<RedditNewsItem>) {

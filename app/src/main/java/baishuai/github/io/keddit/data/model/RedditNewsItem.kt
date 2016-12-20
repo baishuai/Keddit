@@ -1,7 +1,7 @@
 package baishuai.github.io.keddit.data.model
 
-import baishuai.github.io.keddit.ui.common.ViewType
-import baishuai.github.io.keddit.ui.news.AdapterConstants
+import baishuai.github.io.keddit.feture.common.ViewType
+import baishuai.github.io.keddit.feture.news.AdapterConstants
 
 /**
  * Created by Bai Shuai on 16/12/18.

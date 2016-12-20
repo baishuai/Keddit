@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.service
+package baishuai.github.io.keddit.repo
 
 import baishuai.github.io.keddit.data.remote.RedditApi
 import baishuai.github.io.keddit.data.wrapper.RedditNewsResponse
@@ -9,7 +9,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 /**
  * Created by Bai Shuai on 16/12/20.
  */
-class RedditService() {
+class RedditRepo() {
 
     private val redditApi: RedditApi
 

@@ -5,13 +5,18 @@ import baishuai.github.io.keddit.data.model.RedditNewsItem
 /**
  * Created by Bai Shuai on 16/12/20.
  */
-class RedditNewsResponse(val data: RedditDataResponse)
+data class RedditNewsResponse(val data: RedditDataResponse)
 
-class RedditDataResponse(
+data class RedditDataResponse(
         val children: List<RedditChildren>,
         val after: String?,
         val before: String?
 )
 
+data class RedditChildren(val data: RedditNewsItem)
 
-class RedditChildren(val data: RedditNewsItem)
+data class RedditNewsWrapper(
+        val before: String,
+        val after: String,
+        val news: List<RedditNewsItem>
+)
