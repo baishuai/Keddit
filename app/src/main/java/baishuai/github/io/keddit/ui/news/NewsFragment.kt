@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import baishuai.github.io.keddit.R
 import baishuai.github.io.keddit.ui.base.RxBaseFragment
 import baishuai.github.io.keddit.util.inflate
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.news_fragment.*
 
@@ -21,7 +22,7 @@ class NewsFragment : RxBaseFragment() {
     private val newsList by lazy { news_list }
     private val newsPresenter by lazy { NewsPresenter() }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return container?.inflate(R.layout.news_fragment)
     }
 
@@ -40,6 +41,7 @@ class NewsFragment : RxBaseFragment() {
     private fun requestNews() {
         val subscription = newsPresenter.getNews()
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { retrievedNews ->
                             (news_list.adapter as NewsAdapter).addNews(retrievedNews)
