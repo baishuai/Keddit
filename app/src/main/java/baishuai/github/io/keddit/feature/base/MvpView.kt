@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.base
+package baishuai.github.io.keddit.feature.base
 
 /**
  * Base interface that any class that wants to act as a View in the MVP (Model View Presenter)

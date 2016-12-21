@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.common
+package baishuai.github.io.keddit.feature.common
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup

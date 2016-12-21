@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.news
+package baishuai.github.io.keddit.feature.news
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -6,14 +6,16 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import baishuai.github.io.keddit.KedditApp
 import baishuai.github.io.keddit.R
 import baishuai.github.io.keddit.customized.InfiniteScrollListener
 import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
-import baishuai.github.io.keddit.feture.base.RxBaseFragment
+import baishuai.github.io.keddit.feature.base.RxBaseFragment
 import baishuai.github.io.keddit.util.inflate
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.news_fragment.*
+import javax.inject.Inject
 
 /**
  * kotlin android extensions is fucking great
@@ -22,8 +24,13 @@ import kotlinx.android.synthetic.main.news_fragment.*
 class NewsFragment : RxBaseFragment() {
 
     private val newsList by lazy { news_list }
-    private val newsPresenter by lazy { NewsPresenter() }
+    @Inject lateinit var newsPresenter: NewsPresenter
     private var newsWrapper: RedditNewsWrapper? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        KedditApp.appComponent.newsComponent().inject(this)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return container?.inflate(R.layout.news_fragment)

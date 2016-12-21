@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.base
+package baishuai.github.io.keddit.feature.base
 
 /**
  * Base class that implements the Presenter interface and provides a base implementation for

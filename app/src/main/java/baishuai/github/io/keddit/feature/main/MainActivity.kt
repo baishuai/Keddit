@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.main
+package baishuai.github.io.keddit.feature.main
 
 import android.app.FragmentManager
 import android.os.Bundle
@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import baishuai.github.io.keddit.R
-import baishuai.github.io.keddit.feture.news.NewsFragment
+import baishuai.github.io.keddit.feature.news.NewsFragment
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.news
+package baishuai.github.io.keddit.feature.news
 
 /**
  * Created by Bai Shuai on 16/12/18.

@@ -1,14 +1,15 @@
-package baishuai.github.io.keddit.feture.news
+package baishuai.github.io.keddit.feature.news
 
 import baishuai.github.io.keddit.data.wrapper.RedditChildren
 import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
 import baishuai.github.io.keddit.repo.RedditRepo
 import io.reactivex.Observable
+import javax.inject.Inject
 
 /**
  * Created by Bai Shuai on 16/12/18.
  */
-class NewsPresenter(private val service: RedditRepo = RedditRepo()) {
+class NewsPresenter @Inject constructor(private val service: RedditRepo) {
 
 
     fun getNews(after: String, limit: Int = 10): Observable<RedditNewsWrapper> {

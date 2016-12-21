@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.common
+package baishuai.github.io.keddit.feature.common
 
 /**
  * Created by Bai Shuai on 16/12/18.

@@ -1,10 +1,10 @@
-package baishuai.github.io.keddit.feture.news
+package baishuai.github.io.keddit.feature.news
 
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import baishuai.github.io.keddit.R
-import baishuai.github.io.keddit.feture.common.ViewType
-import baishuai.github.io.keddit.feture.common.ViewTypeDelegateAdapter
+import baishuai.github.io.keddit.feature.common.ViewType
+import baishuai.github.io.keddit.feature.common.ViewTypeDelegateAdapter
 import baishuai.github.io.keddit.util.inflate
 
 /**

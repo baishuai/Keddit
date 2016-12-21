@@ -1,4 +1,4 @@
-package baishuai.github.io.keddit.feture.base
+package baishuai.github.io.keddit.feature.base
 
 import android.support.v4.app.Fragment
 import io.reactivex.disposables.CompositeDisposable
