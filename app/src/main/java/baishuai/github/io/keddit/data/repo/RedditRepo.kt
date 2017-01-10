@@ -16,7 +16,7 @@ import javax.inject.Inject
 class RedditModule {
 
     @Provides
-    fun provideRedditApi(retrofit: Retrofit): RedditService {
+    fun provideRedditService(retrofit: Retrofit): RedditService {
         return retrofit.create(RedditService::class.java)
     }
 }
