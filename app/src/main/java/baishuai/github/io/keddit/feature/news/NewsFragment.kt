@@ -23,7 +23,10 @@ import javax.inject.Inject
  */
 class NewsFragment : RxBaseFragment() {
 
-    private val newsList by lazy { news_list }
+    companion object {
+        private val KEY_REDDIT_NEWS = "redditNews"
+    }
+
     @Inject lateinit var newsPresenter: NewsPresenter
     private var newsWrapper: RedditNewsWrapper? = null
 
@@ -38,16 +41,33 @@ class NewsFragment : RxBaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        newsList.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(context)
-        newsList.layoutManager = layoutManager
-        newsList.clearOnScrollListeners()
-        newsList.addOnScrollListener(InfiniteScrollListener(layoutManager) { requestNews() })
+
+        newsList.apply {
+            setHasFixedSize(true)
+            val linearLayout = LinearLayoutManager(context)
+            layoutManager = linearLayout
+            clearOnScrollListeners()
+
+            addOnScrollListener(InfiniteScrollListener(linearLayout) { requestNews() })
+        }
 
         initAdapter()
 
-        if (savedInstanceState == null) {
+        if (savedInstanceState != null &&
+                savedInstanceState.containsKey(KEY_REDDIT_NEWS)) {
+            newsWrapper = savedInstanceState.getParcelable(KEY_REDDIT_NEWS)
+            (newsList.adapter as NewsAdapter).clearAndAddNews(newsWrapper!!.news)
+        } else {
             requestNews()
+        }
+    }
+
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val news = (newsList.adapter as NewsAdapter).getNews()
+        if (newsWrapper != null && news.isNotEmpty()) {
+            outState.putParcelable(KEY_REDDIT_NEWS, newsWrapper?.copy(news = news))
         }
     }
 
@@ -63,10 +83,10 @@ class NewsFragment : RxBaseFragment() {
                 .subscribe(
                         { retrievedNews ->
                             newsWrapper = retrievedNews.copy(news = emptyList())
-                            (news_list.adapter as NewsAdapter).addNews(retrievedNews.news)
+                            (newsList.adapter as NewsAdapter).addNews(retrievedNews.news)
                         },
                         { e ->
-                            Snackbar.make(news_list, e.message ?: "", Snackbar.LENGTH_LONG).show()
+                            Snackbar.make(newsList, e.message ?: "", Snackbar.LENGTH_LONG).show()
                         }
                 )
         dispose.add(subscription)

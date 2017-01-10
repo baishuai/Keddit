@@ -16,7 +16,7 @@ import java.util.*
  */
 class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: ArrayList<ViewType>
+    private var items: ArrayList<ViewType> = ArrayList()
     private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
     private val loadingItem = object : ViewType {
         override fun getViewType() = AdapterConstants.LOADING
@@ -25,7 +25,6 @@ class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     init {
         delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
         delegateAdapters.put(AdapterConstants.NEWS, NewsDelegateAdapter())
-        items = ArrayList()
         items.add(loadingItem)
     }
 

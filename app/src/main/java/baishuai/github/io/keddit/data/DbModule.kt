@@ -7,7 +7,7 @@ import dagger.Module
  * Data Module for Dagger2
  */
 @Module
-class DataModule {
+class DbModule {
 
 
 }

@@ -1,6 +1,6 @@
 package baishuai.github.io.keddit.feature.news
 
-import baishuai.github.io.keddit.data.remote.RedditModule
+import baishuai.github.io.keddit.data.repo.RedditModule
 import baishuai.github.io.keddit.injection.PerActivity
 import dagger.Subcomponent
 

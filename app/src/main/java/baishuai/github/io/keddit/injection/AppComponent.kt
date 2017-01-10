@@ -1,7 +1,7 @@
 package baishuai.github.io.keddit.injection
 
 import baishuai.github.io.keddit.data.ApiModule
-import baishuai.github.io.keddit.data.DataModule
+import baishuai.github.io.keddit.data.DbModule
 import baishuai.github.io.keddit.feature.news.NewsComponent
 import dagger.Component
 import javax.inject.Singleton
@@ -13,7 +13,7 @@ import javax.inject.Singleton
 @Component(modules = arrayOf(
         AppModule::class,
         ApiModule::class,
-        DataModule::class))
+        DbModule::class))
 interface AppComponent {
     fun newsComponent(): NewsComponent
 }

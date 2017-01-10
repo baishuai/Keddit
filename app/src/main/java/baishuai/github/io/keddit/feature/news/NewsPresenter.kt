@@ -2,7 +2,7 @@ package baishuai.github.io.keddit.feature.news
 
 import baishuai.github.io.keddit.data.wrapper.RedditChildren
 import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
-import baishuai.github.io.keddit.repo.RedditRepo
+import baishuai.github.io.keddit.data.repo.RedditRepo
 import io.reactivex.Observable
 import javax.inject.Inject
 
