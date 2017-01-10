@@ -1,7 +1,5 @@
 package baishuai.github.io.keddit.data.wrapper
 
-import android.os.Parcel
-import android.os.Parcelable
 import baishuai.github.io.keddit.data.model.RedditNewsItem
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
@@ -25,9 +23,8 @@ data class RedditNewsWrapper(
         val after: String,
         val news: List<RedditNewsItem>
 ) : PaperParcelable {
-
     companion object {
-      @JvmField val CREATOR = PaperParcelRedditNewsWrapper.CREATOR
+        @JvmField @Suppress("unused")
+        val CREATOR = PaperParcelRedditNewsWrapper.CREATOR
     }
-
 }

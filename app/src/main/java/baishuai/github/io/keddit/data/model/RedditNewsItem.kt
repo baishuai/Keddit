@@ -19,7 +19,8 @@ data class RedditNewsItem(
 ) : ViewType, PaperParcelable {
 
     companion object {
-        @JvmField val CREATOR = PaperParcelRedditNewsItem.CREATOR
+        @JvmField @Suppress("unused")
+        val CREATOR = PaperParcelRedditNewsItem.CREATOR
     }
 
     override fun getViewType() = AdapterConstants.NEWS
