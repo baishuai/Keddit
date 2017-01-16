@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'easymvp'
 
 android {
     compileSdkVersion 25
@@ -41,6 +42,9 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.0-beta2'
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.0-beta2'
 
+    //compile 'com.arello-mobile:moxy-app-compat:1.4.4'
+    //kapt 'com.arello-mobile:moxy-compiler:1.4.4'
+
     // RxJava & RxAndroid
     compile 'io.reactivex.rxjava2:rxjava:2.0.3'
     compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
@@ -48,7 +52,6 @@ dependencies {
     // Retrofit
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-moshi:2.1.0'
-
 
     // Dagger
     compile 'com.google.dagger:dagger:2.8'

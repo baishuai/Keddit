@@ -10,10 +10,10 @@ import baishuai.github.io.keddit.KedditApp
 import baishuai.github.io.keddit.R
 import baishuai.github.io.keddit.customized.InfiniteScrollListener
 import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
-import baishuai.github.io.keddit.feature.base.RxBaseFragment
+import baishuai.github.io.keddit.feature.base.BaseFragment
 import baishuai.github.io.keddit.util.inflate
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import easymvp.annotation.FragmentView
+import easymvp.annotation.Presenter
 import kotlinx.android.synthetic.main.news_fragment.*
 import javax.inject.Inject
 
@@ -21,17 +21,20 @@ import javax.inject.Inject
  * kotlin android extensions is fucking great
  * Created by Bai Shuai on 16/12/18.
  */
-class NewsFragment : RxBaseFragment() {
+@FragmentView(presenter = NewsPresenter::class)
+class NewsFragment : BaseFragment(), NewsView {
 
     companion object {
         private val KEY_REDDIT_NEWS = "redditNews"
     }
 
-    @Inject lateinit var newsPresenter: NewsPresenter
+    @Inject
+    @Presenter
+    lateinit var newsPresenter: NewsPresenter
+
     private var newsWrapper: RedditNewsWrapper? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun daggerInject() {
         KedditApp.appComponent.newsComponent().inject(this)
     }
 
@@ -39,9 +42,7 @@ class NewsFragment : RxBaseFragment() {
         return container?.inflate(R.layout.news_fragment)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         newsList.apply {
             setHasFixedSize(true)
             val linearLayout = LinearLayoutManager(context)
@@ -51,14 +52,21 @@ class NewsFragment : RxBaseFragment() {
             addOnScrollListener(InfiniteScrollListener(linearLayout) { requestNews() })
         }
 
-        initAdapter()
+        if (newsList.adapter == null) {
+            newsList.adapter = NewsAdapter()
+        }
 
         if (savedInstanceState != null &&
                 savedInstanceState.containsKey(KEY_REDDIT_NEWS)) {
             newsWrapper = savedInstanceState.getParcelable(KEY_REDDIT_NEWS)
             (newsList.adapter as NewsAdapter).clearAndAddNews(newsWrapper!!.news)
-        } else {
-            requestNews()
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (newsWrapper == null) {
+            newsPresenter.getNews(newsWrapper?.after ?: "")
         }
     }
 
@@ -71,32 +79,22 @@ class NewsFragment : RxBaseFragment() {
         }
     }
 
+    override fun showNews(news: RedditNewsWrapper) {
+        newsWrapper = news.copy(news = emptyList())
+        (newsList.adapter as NewsAdapter).addNews(news.news)
+    }
+
+    override fun showError(err: Throwable) {
+        Snackbar.make(newsList, err.message ?: "Something Wrong!", Snackbar.LENGTH_SHORT).show()
+    }
+
     private fun requestNews() {
         /**
          * first time will send empty string for after parameter.
          * Next time we will have redditNews set with the next page to
          * navigate with the after param.
          */
-        val subscription = newsPresenter.getNews(newsWrapper?.after ?: "")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        { retrievedNews ->
-                            newsWrapper = retrievedNews.copy(news = emptyList())
-                            (newsList.adapter as NewsAdapter).addNews(retrievedNews.news)
-                        },
-                        { e ->
-                            Snackbar.make(newsList, e.message ?: "", Snackbar.LENGTH_LONG).show()
-                        }
-                )
-        dispose.add(subscription)
+        newsPresenter.getNews(newsWrapper?.after ?: "")
     }
-
-    private fun initAdapter() {
-        if (newsList.adapter == null) {
-            newsList.adapter = NewsAdapter()
-        }
-    }
-
 
 }

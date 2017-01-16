@@ -10,6 +10,7 @@ import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.observers.TestObserver
+import io.reactivex.subscribers.TestSubscriber
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import org.junit.Before
@@ -25,14 +26,14 @@ import java.util.*
  */
 class NewsPresenterTest {
 
-    lateinit var testSub: TestObserver<RedditNewsWrapper>
+    lateinit var testSub: TestSubscriber<RedditNewsWrapper>
     lateinit var apiMock: RedditRepo
     lateinit var callMock: Call<RedditNewsResponse>
 
     @Before
     fun setUp() {
 
-        testSub = TestObserver<RedditNewsWrapper>()
+        testSub = TestSubscriber<RedditNewsWrapper>()
         val serviceMock = mock<RedditService>()
         apiMock = RedditRepo(serviceMock)
         callMock = mock<Call<RedditNewsResponse>>()
@@ -48,7 +49,7 @@ class NewsPresenterTest {
 
         // call
         val newsPresenter = NewsPresenter(apiMock)
-        testSub = newsPresenter.getNews("").test()
+        testSub = newsPresenter.getNewsRx("").test()
 
         // assert
         testSub.assertNoErrors()
@@ -66,7 +67,7 @@ class NewsPresenterTest {
 
         // call
         val newsPresenter = NewsPresenter(apiMock)
-        testSub = newsPresenter.getNews("").test()
+        newsPresenter.getNewsRx("").subscribe(testSub)
 
         // assert
         testSub.assertNoErrors()
@@ -87,7 +88,7 @@ class NewsPresenterTest {
         whenever(callMock.execute()).thenReturn(responseError)
         // call
         val newsManager = NewsPresenter(apiMock)
-        newsManager.getNews("").subscribe(testSub)
+        newsManager.getNewsRx("").subscribe(testSub)
 
         // assert
         assert(testSub.errorCount() == 1)

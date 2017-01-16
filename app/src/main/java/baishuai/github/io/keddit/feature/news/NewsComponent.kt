@@ -12,5 +12,5 @@ import dagger.Subcomponent
         RedditModule::class
 ))
 interface NewsComponent {
-    fun inject(newsFragment: NewsFragment)
+    fun inject(fragment: NewsFragment)
 }

@@ -10,6 +10,7 @@ import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.observers.TestObserver
+import io.reactivex.subscribers.TestSubscriber
 import okhttp3.MediaType
 import okhttp3.ResponseBody
 import org.jetbrains.spek.api.Spek
@@ -26,13 +27,13 @@ import java.util.*
 class NewsPresenterSpecTest : Spek({
 
     given("a NewsPresenter") {
-        var testSub = TestObserver<RedditNewsWrapper>()
+        var testSub = TestSubscriber<RedditNewsWrapper>()
         var apiMock = RedditRepo(mock())
         var callMock = mock<Call<RedditNewsResponse>>()
 
         beforeEach {
 
-            testSub = TestObserver<RedditNewsWrapper>()
+            testSub = TestSubscriber<RedditNewsWrapper>()
             val serviceMock = mock<RedditService>()
             apiMock = RedditRepo(serviceMock)
             callMock = mock<Call<RedditNewsResponse>>()
@@ -47,7 +48,7 @@ class NewsPresenterSpecTest : Spek({
 
                 // call
                 val newsPresenter = NewsPresenter(apiMock)
-                testSub = newsPresenter.getNews("").test()
+                testSub = newsPresenter.getNewsRx("").test()
             }
 
             it("should receive something and no errors") {
@@ -68,7 +69,7 @@ class NewsPresenterSpecTest : Spek({
 
                 // call
                 val newsManager = NewsPresenter(apiMock)
-                newsManager.getNews("").subscribe(testSub)
+                newsManager.getNewsRx("").subscribe(testSub)
             }
 
             it("should process only one news successfully") {
@@ -93,7 +94,7 @@ class NewsPresenterSpecTest : Spek({
 
                 // call
                 val newsManager = NewsPresenter(apiMock)
-                newsManager.getNews("").subscribe(testSub)
+                testSub = newsManager.getNewsRx("").test()
             }
 
             it("should receive an onError message") {

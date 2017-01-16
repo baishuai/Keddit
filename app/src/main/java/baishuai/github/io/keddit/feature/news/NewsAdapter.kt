@@ -3,11 +3,9 @@ package baishuai.github.io.keddit.feature.news
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import baishuai.github.io.keddit.BuildConfig
 import baishuai.github.io.keddit.data.model.RedditNewsItem
 import baishuai.github.io.keddit.feature.common.ViewType
 import baishuai.github.io.keddit.feature.common.ViewTypeDelegateAdapter
-import timber.log.Timber
 import java.util.*
 
 /**
