@@ -1,11 +1,13 @@
 package baishuai.github.io.keddit.feature.news
 
-import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import baishuai.github.io.keddit.R
 import baishuai.github.io.keddit.data.model.RedditNewsItem
-import baishuai.github.io.keddit.feature.common.ViewType
-import baishuai.github.io.keddit.feature.common.ViewTypeDelegateAdapter
+import baishuai.github.io.keddit.util.getFriendlyTime
+import baishuai.github.io.keddit.util.inflate
+import baishuai.github.io.keddit.util.loadImg
+import kotlinx.android.synthetic.main.news_item.view.*
 import java.util.*
 
 /**
@@ -14,50 +16,49 @@ import java.util.*
  */
 class NewsAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var items: ArrayList<ViewType> = ArrayList()
-    private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
-    private val loadingItem = object : ViewType {
-        override fun getViewType() = AdapterConstants.LOADING
-    }
-
-    init {
-        delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
-        delegateAdapters.put(AdapterConstants.NEWS, NewsDelegateAdapter())
-        items.add(loadingItem)
-    }
+    private var items: ArrayList<RedditNewsItem> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return delegateAdapters.get(viewType).onCreateViewHolder(parent)
+        return NewsViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegateAdapters.get(getItemViewType(position)).onBindViewHolder(holder, this.items[position])
+        holder as NewsViewHolder
+        holder.bind(items[position])
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return items[position].getViewType()
+    class NewsViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+            parent.inflate(R.layout.news_item)) {
+        fun bind(item: RedditNewsItem) = with(itemView) {
+            img_thumbnail.loadImg(item.thumbnail)
+            description.text = item.title
+            author.text = item.author
+            comments.text = "${item.numComments} comments"
+            time.text = item.created.getFriendlyTime()
+        }
     }
 
     fun addNews(news: List<RedditNewsItem>) {
-        val initPosition = items.size - 1
+        val initPosition = items.size
         items.addAll(initPosition, news)
-        notifyItemRangeChanged(initPosition, itemCount)
+        //notifyItemRangeInserted(initPosition, itemCount)
+        if (initPosition == 0) {
+            notifyDataSetChanged()
+        } else
+            notifyItemRangeChanged(initPosition, itemCount)
     }
 
     fun clearAndAddNews(news: List<RedditNewsItem>) {
         items.clear()
         items.addAll(news)
-        items.add(loadingItem)
         notifyDataSetChanged()
     }
 
     fun getNews(): List<RedditNewsItem> {
         return items
-                .filter { it.getViewType() == AdapterConstants.NEWS }
-                .map { it as RedditNewsItem }
     }
 }

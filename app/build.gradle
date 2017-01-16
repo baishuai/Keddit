@@ -7,6 +7,9 @@ apply plugin: 'easymvp'
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+    dataBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId "baishuai.github.io.keddit"
         minSdkVersion 16

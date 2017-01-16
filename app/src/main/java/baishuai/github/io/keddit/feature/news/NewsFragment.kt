@@ -8,13 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import baishuai.github.io.keddit.KedditApp
 import baishuai.github.io.keddit.R
-import baishuai.github.io.keddit.customized.InfiniteScrollListener
 import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
 import baishuai.github.io.keddit.feature.base.BaseFragment
 import baishuai.github.io.keddit.util.inflate
+import baishuai.github.io.keddit.widgets.loadmore.LoadMoreRecyclerView
 import easymvp.annotation.FragmentView
 import easymvp.annotation.Presenter
 import kotlinx.android.synthetic.main.news_fragment.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -34,6 +35,8 @@ class NewsFragment : BaseFragment(), NewsView {
 
     private var newsWrapper: RedditNewsWrapper? = null
 
+    private var newsApapter: NewsAdapter? = null
+
     override fun daggerInject() {
         KedditApp.appComponent.newsComponent().inject(this)
     }
@@ -47,19 +50,24 @@ class NewsFragment : BaseFragment(), NewsView {
             setHasFixedSize(true)
             val linearLayout = LinearLayoutManager(context)
             layoutManager = linearLayout
-            clearOnScrollListeners()
+            //clearOnScrollListeners()
 
-            addOnScrollListener(InfiniteScrollListener(linearLayout) { requestNews() })
+            setLoadMoreListener(object : LoadMoreRecyclerView.LoadMoreListener {
+                override fun onLoadMore() {
+                    requestNews()
+                }
+            })
         }
 
-        if (newsList.adapter == null) {
-            newsList.adapter = NewsAdapter()
+        if (newsApapter == null) {
+            newsApapter = NewsAdapter()
+            newsList.adapter = newsApapter
         }
 
         if (savedInstanceState != null &&
                 savedInstanceState.containsKey(KEY_REDDIT_NEWS)) {
             newsWrapper = savedInstanceState.getParcelable(KEY_REDDIT_NEWS)
-            (newsList.adapter as NewsAdapter).clearAndAddNews(newsWrapper!!.news)
+            newsApapter?.clearAndAddNews(newsWrapper!!.news)
         }
     }
 
@@ -73,7 +81,7 @@ class NewsFragment : BaseFragment(), NewsView {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val news = (newsList.adapter as NewsAdapter).getNews()
+        val news = newsApapter!!.getNews()
         if (newsWrapper != null && news.isNotEmpty()) {
             outState.putParcelable(KEY_REDDIT_NEWS, newsWrapper?.copy(news = news))
         }
@@ -81,11 +89,17 @@ class NewsFragment : BaseFragment(), NewsView {
 
     override fun showNews(news: RedditNewsWrapper) {
         newsWrapper = news.copy(news = emptyList())
-        (newsList.adapter as NewsAdapter).addNews(news.news)
+        newsApapter!!.addNews(news.news)
     }
 
     override fun showError(err: Throwable) {
         Snackbar.make(newsList, err.message ?: "Something Wrong!", Snackbar.LENGTH_SHORT).show()
+        Timber.e(err.message)
+    }
+
+    override fun noMore() {
+        Timber.d("no more")
+        newsList.mHasMore = false
     }
 
     private fun requestNews() {

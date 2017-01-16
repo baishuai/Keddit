@@ -9,6 +9,7 @@ import io.reactivex.Flowable
 import io.reactivex.FlowableEmitter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -17,12 +18,18 @@ import javax.inject.Inject
  */
 class NewsPresenter @Inject constructor(private val repo: RedditRepo) : RxPresenter<NewsView>() {
 
+    var count = 0;
+
     fun getNews(after: String, limit: Int = 10) {
+        count++
         addSubscription(getNewsRx(after, limit)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe({ view?.showNews(it) },
-                        { view?.showError(it) }))
+                .subscribe({
+                    view?.showNews(it)
+                    if (count == 3)
+                        view?.noMore()
+                }, { view?.showError(it) }))
     }
 
 
@@ -32,7 +39,6 @@ class NewsPresenter @Inject constructor(private val repo: RedditRepo) : RxPresen
             val response = callResponse.execute()
             if (response.isSuccessful) {
                 val dataResponse = response.body().data
-
                 val news = dataResponse.children.map(RedditChildren::data)
                 val newsWrapper = RedditNewsWrapper(
                         dataResponse.before ?: "",

@@ -1,7 +1,5 @@
 package baishuai.github.io.keddit.data.model
 
-import baishuai.github.io.keddit.feature.common.ViewType
-import baishuai.github.io.keddit.feature.news.AdapterConstants
 import paperparcel.PaperParcel
 import paperparcel.PaperParcelable
 
@@ -16,12 +14,11 @@ data class RedditNewsItem(
         val created: Long,
         val thumbnail: String,
         val url: String
-) : ViewType, PaperParcelable {
+) : PaperParcelable {
 
     companion object {
         @JvmField @Suppress("unused")
         val CREATOR = PaperParcelRedditNewsItem.CREATOR
     }
 
-    override fun getViewType() = AdapterConstants.NEWS
 }

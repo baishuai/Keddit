@@ -7,5 +7,6 @@ import baishuai.github.io.keddit.data.wrapper.RedditNewsWrapper
  */
 interface NewsView {
     fun showNews(news: RedditNewsWrapper)
+    fun noMore()
     fun showError(err: Throwable)
 }
