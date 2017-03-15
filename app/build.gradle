@@ -35,8 +35,8 @@ kapt {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
@@ -45,6 +45,7 @@ dependencies {
     compile 'nz.bradcampbell:paperparcel-kotlin:2.0.0-beta2'
     kapt 'nz.bradcampbell:paperparcel-compiler:2.0.0-beta2'
 
+    kapt "com.android.databinding:compiler:$android_plugin_version"
     //compile 'com.arello-mobile:moxy-app-compat:1.4.4'
     //kapt 'com.arello-mobile:moxy-compiler:1.4.4'
 
